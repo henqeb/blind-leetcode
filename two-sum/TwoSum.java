@@ -6,8 +6,8 @@ import java.util.Map.Entry;
 public class TwoSum {
 
     public static void main(String[] args) {
-        int[] input = { 3, 3 };
-        int target = 6;
+        int[] input = {-1,-2,-3,-4,-5};
+        int target = -8;
 
         int[] solution = twoSum(input, target);
         for (int i : solution)
@@ -26,7 +26,7 @@ public class TwoSum {
                 result = new int[] { matchingIndex, i };
                 break;
             } else {
-                map.put(i, Math.abs(nums[i] - target));
+                map.put(i, target - nums[i]);
             }
         }
 
