@@ -7,6 +7,7 @@ public class TwoSum {
 
     public static void main(String[] args) {
         int[] input = {-1,-2,-3,-4,-5};
+        // int[] input = {2,7,11,15};
         int target = -8;
 
         int[] solution = twoSum(input, target);
@@ -16,17 +17,16 @@ public class TwoSum {
 
     public static int[] twoSum(int[] nums, int target) {
         int[] result = null;
-        var map = new HashMap<Integer, Integer>();
+        var map = new HashMap<Integer, Integer>(); // <value, index>
 
         for (int i = 0; i < nums.length; i++) {
-            if (map.containsValue(nums[i])) {
-                // stop and get index
-                int matchingIndex = getKeyByValue(map, nums[i]);
-                // update result array
-                result = new int[] { matchingIndex, i };
+            int complement = target - nums[i];
+            if (map.containsKey(complement)) {
+                result = new int[] { map.get(complement), i };
                 break;
-            } else {
-                map.put(i, target - nums[i]);
+            }
+            else {
+                map.put(nums[i], i);
             }
         }
 
