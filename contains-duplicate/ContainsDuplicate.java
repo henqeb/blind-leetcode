@@ -6,12 +6,14 @@ public class ContainsDuplicate {
         
     }
 
+    /**
+     * HashSet.add(..) returns true if element not already in set, false otherwise.
+     * Because of this we only need one conditional: Simply check if the add operation was successful. 
+     */
     public static boolean containsDuplicate(int[] nums) {
         var dupSet = new HashSet<Integer>();
-
         for (int num : nums) {
-            if (dupSet.contains(num)) return true;
-            else dupSet.add(num);
+            if (!dupSet.add(num)) return true;
         }
 
         return false;
