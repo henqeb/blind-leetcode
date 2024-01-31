@@ -11,11 +11,14 @@ if [ ! -d "$SCRIPT_DIR" ]; then
 fi
 
 # Loop through all subdirectories
-for subdirectory in "$SCRIPT_DIR    "/*/; do
-    mkdir "${dir1}"
-    mkdir "${dir2}"
+for subdirectory in "$SCRIPT_DIR"/*/; do
+    echo "Current subdirectory: ${subdirectory}"
+    
+    mkdir -p "${subdirectory}${dir1}"
+    mkdir -p "${subdirectory}${dir2}"
 
     # Move existing Java files to dir1
+    find "$subdirectory" -maxdepth 1 -type f -name "*.class" -exec mv {} "${subdirectory}${dir1}/" \;
     find "$subdirectory" -maxdepth 1 -type f -name "*.java" -exec mv {} "${subdirectory}${dir1}/" \;
 
     echo "Moved Java files to dir1 in: ${subdirectory}"
