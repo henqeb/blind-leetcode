@@ -5,25 +5,33 @@ class Solution {
         System.out.println(maxSubArray(input));
     }
 
+    private static int[] memo;
+    
     public static int maxSubArray(int[] nums) {
-        if (nums.length == 1) return nums[0];
-        
         final int N = nums.length;
-        int[] memo = new int[N];
-        memo[0] = 0;
-        
-        for (int j = 1; j < N; j++) {
-            int[] subarray = new int[j];
-            // copy i elements from input array to temporary subarray
-            memo[j] = Math.max(sum(subarray), memo[j-1]);
+        memo = new int[N];
+        memo[0] = nums[0]; // base case
+
+        int currMax = nums[0];
+        for (int i = 1; i < N; i++) {
+            memo[i] = nums[i] + Math.max(0, memo[i-1]);
+            if (memo[i] > currMax) currMax = memo[i];
         }
 
-        return memo[N-1];
+        return currMax;
     }
 
-    public static int sum(int[] intArray) {
-        int sum = 0;
-        for (int i = 0; i < intArray.length; i++) {sum += intArray[i];}
-        return sum;
-    }
+    // /**
+    //  * Helper method for maxSubArray()
+    //  * @param i recurrence counter
+    //  * @return max sum of a subarray from input array
+    //  */
+    // public static int recursiveMaxSubArray(int[] nums, int[] memo, int i) {
+    //     // base case
+    //     if (i <= 0) {
+    //         return nums[i];
+    //     }
+    //     return 
+
+    // }
 }
