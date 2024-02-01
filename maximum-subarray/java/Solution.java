@@ -4,34 +4,21 @@ class Solution {
         int[] input = new int[]{-2,1,-3,4,-1,2,1,-5,4};
         System.out.println(maxSubArray(input));
     }
-
-    private static int[] memo;
     
+    /**
+     * Linear time version. Keeps track of the largest sum encountered while iterating.
+     * If there exists a negative number so large such that the sum will be negative, reset sum to 0 to avoid
+     * decrementing the largest maximum value found so far.
+     */
     public static int maxSubArray(int[] nums) {
-        final int N = nums.length;
-        memo = new int[N];
-        memo[0] = nums[0]; // base case
-
         int currMax = nums[0];
-        for (int i = 1; i < N; i++) {
-            memo[i] = nums[i] + Math.max(0, memo[i-1]);
-            if (memo[i] > currMax) currMax = memo[i];
+        int sum = 0;
+        for (int i = 0; i < nums.length; i++) {
+            sum += nums[i];
+            currMax = Math.max(currMax, sum);
+            sum = Math.max(sum, 0); // avoiding negative sums
         }
 
         return currMax;
     }
-
-    // /**
-    //  * Helper method for maxSubArray()
-    //  * @param i recurrence counter
-    //  * @return max sum of a subarray from input array
-    //  */
-    // public static int recursiveMaxSubArray(int[] nums, int[] memo, int i) {
-    //     // base case
-    //     if (i <= 0) {
-    //         return nums[i];
-    //     }
-    //     return 
-
-    // }
 }
