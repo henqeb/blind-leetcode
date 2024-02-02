@@ -1,5 +1,6 @@
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -7,8 +8,14 @@ public class Solution {
 
     public static void main(String[] args) {
         int[] input = {-1,0,1,2,-1,-4};
-        int[] testCopy = copyInputArrayAfterIndex(input, 0);
-        for (int num : testCopy) System.out.printf("%d ", num);
+        var tripletList = threeSum(input);
+        
+        for (var triplet : tripletList) {
+            int x = triplet.get(0);
+            int y = triplet.get(1);
+            int z = triplet.get(2);
+            System.out.printf("(%d, %d, %d)\n", x, y, z);
+        }
     }
 
     /**
@@ -16,16 +23,32 @@ public class Solution {
      * @param nums input array of numbers
      * @return List of triplets (also represented as lists).
      */
-    public List<List<Integer>> threeSum(int[] nums) {
+    public static List<List<Integer>> threeSum(int[] nums) {
         var tripletSet = new HashSet<List<Integer>>();
 
         int x, y, z;
+        int[] twoSumSearchSpace;
+        int[] twoSumResult;
         for (int i = 0; i < nums.length; i++) {
             x = nums[i];
-
+            twoSumSearchSpace = copyInputArrayAfterIndex(nums, i);
+            twoSumResult = twoSum(twoSumSearchSpace, -x);
+            if (twoSumResult == null) continue;
+            
+            // found y + z = -x, meaning  x + y + z = 0
+            y = twoSumResult[0];
+            z = twoSumResult[1];
+            if (x == y && y == z) continue;
+            
+            // detect duplicate triplet
+            if (!tripletSet.add(new ArrayList<Integer>(Arrays.asList(x, y, z)))) {
+                continue;
+            }
         }
 
-        return null;
+        var result = new ArrayList<>(tripletSet);
+
+        return result;
     }
 
     public static int[] copyInputArrayAfterIndex(int[] inputArray, int index) {
