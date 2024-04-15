@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.Stack;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -29,16 +30,16 @@ public class Solution {
         for (int i = 0; i < nums.length; i++) {
             int x = nums[i];
             int[] twoSumSearchSpace = copyInputArrayAfterIndex(nums, i);
-            int[] twoSumResult = twoSum(twoSumSearchSpace, -x);
-            if (twoSumResult == null) continue;
-            
-            // found y + z = -x, meaning  x + y + z = 0
-            int y = twoSumResult[0];
-            int z = twoSumResult[1];
-            
-            // detect duplicate triplet
-            if (!tripletSet.add(new ArrayList<Integer>(Arrays.asList(x, y, z)))) {
-                continue;
+            Stack<int[]> twoSumResult = twoSum(twoSumSearchSpace, -x);
+            if (twoSumResult.empty()) continue;
+
+            while (!twoSumResult.empty()) {
+                int[] yz = twoSumResult.pop();
+                int y = yz[0];
+                int z = yz[1];
+
+                if (!tripletSet.add(new ArrayList<Integer>(Arrays.asList(x, y, z))))
+                    continue;
             }
         }
 
@@ -63,21 +64,21 @@ public class Solution {
      * @param target target value which nums[i] + nums[j] must equal to.
      * @return int-array of size two containing indices of two numbers that add up to target.
      */
-    public static int[] twoSum(int[] nums, int target) {
-        int[] result = null;
+    public static Stack<int[]> twoSum(int[] nums, int target) {
+        Stack<int[]> results = new Stack<>();
         var map = new HashMap<Integer, Integer>(); // <value, index>
 
         for (int i = 0; i < nums.length; i++) {
             int complement = target - nums[i];
             if (map.containsKey(complement)) {
-                result = new int[] { map.get(complement), i };
-                break;
+                results.push(new int[] { map.get(complement), nums[i] }); // TODO: gjennomgå tuple
+                // TODO: map.put(nums[i], i) ??
             }
             else {
                 map.put(nums[i], i);
             }
         }
 
-        return result;
+        return results;
     }
 }
