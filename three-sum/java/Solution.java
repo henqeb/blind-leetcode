@@ -26,19 +26,15 @@ public class Solution {
     public static List<List<Integer>> threeSum(int[] nums) {
         var tripletSet = new HashSet<List<Integer>>();
 
-        int x, y, z;
-        int[] twoSumSearchSpace;
-        int[] twoSumResult;
         for (int i = 0; i < nums.length; i++) {
-            x = nums[i];
-            twoSumSearchSpace = copyInputArrayAfterIndex(nums, i);
-            twoSumResult = twoSum(twoSumSearchSpace, -x);
+            int x = nums[i];
+            int[] twoSumSearchSpace = copyInputArrayAfterIndex(nums, i);
+            int[] twoSumResult = twoSum(twoSumSearchSpace, -x);
             if (twoSumResult == null) continue;
             
             // found y + z = -x, meaning  x + y + z = 0
-            y = twoSumResult[0];
-            z = twoSumResult[1];
-            if (x == y && y == z) continue;
+            int y = twoSumResult[0];
+            int z = twoSumResult[1];
             
             // detect duplicate triplet
             if (!tripletSet.add(new ArrayList<Integer>(Arrays.asList(x, y, z)))) {
@@ -53,10 +49,8 @@ public class Solution {
 
     public static int[] copyInputArrayAfterIndex(int[] inputArray, int index) {
         int[] result = new int[inputArray.length - (index+1)];
-        int copyIndex;
-        int inputIndex;
         for (int i = 0; i < result.length; i++) {
-            inputIndex = i + index + 1;
+            int inputIndex = i + index + 1;
             result[i] = inputArray[inputIndex];
         }
 
