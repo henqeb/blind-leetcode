@@ -9,7 +9,7 @@ public class Solution {
 
     public static void main(String[] args) {
         int[] input = {-1,0,1,2,-1,-4};
-        var tripletList = threeSum(input);
+        var tripletList = threeSum_WORKING(input);
         
         for (var triplet : tripletList) {
             int x = triplet.get(0);
@@ -25,6 +25,38 @@ public class Solution {
      * @return List of triplets (also represented as lists).
      */
     public static List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>> tripletList = new ArrayList<>();
+
+        for (int i = 0; i < nums.length; i++) {
+            int x = nums[i];
+            int[] twoSumSearchSpace = copyInputArrayAfterIndex(nums, i); // TODO: replace with nested loop?
+            Stack<int[]> twoSumResult = twoSum(twoSumSearchSpace, -x);
+            if (twoSumResult.empty()) {
+                continue;
+            }
+
+            while (!twoSumResult.empty()) {
+                int[] yz = twoSumResult.pop();
+                int y = yz[0];
+                int z = yz[1];
+
+                ArrayList<Integer> newTriplet = new ArrayList<>(Arrays.asList(x, y, z));
+                for (var triplet : tripletList) { // TODO: fortsett her
+                    if (newTriplet.containsAll(triplet) && triplet.containsAll(newTriplet)) {
+                        System.out.println("Found duplicate"); // TODO: fjern test
+                        break;
+                    }
+                    else {
+                        tripletList.add(newTriplet);
+                    }
+                }
+            }
+        }
+
+        return tripletList;
+    }
+
+    public static List<List<Integer>> threeSum_WORKING(int[] nums) {
         var tripletSet = new HashSet<List<Integer>>();
 
         for (int i = 0; i < nums.length; i++) {
@@ -48,7 +80,7 @@ public class Solution {
         return result;
     }
 
-    public static int[] copyInputArrayAfterIndex(int[] inputArray, int index) {
+    private static int[] copyInputArrayAfterIndex(int[] inputArray, int index) {
         int[] result = new int[inputArray.length - (index+1)];
         for (int i = 0; i < result.length; i++) {
             int inputIndex = i + index + 1;
@@ -64,7 +96,7 @@ public class Solution {
      * @param target target value which nums[i] + nums[j] must equal to.
      * @return int-array of size two containing indices of two numbers that add up to target.
      */
-    public static Stack<int[]> twoSum(int[] nums, int target) {
+    private static Stack<int[]> twoSum(int[] nums, int target) {
         Stack<int[]> results = new Stack<>();
         var map = new HashMap<Integer, Integer>(); // <value, index>
 
@@ -72,10 +104,9 @@ public class Solution {
             int complement = target - nums[i];
             if (map.containsKey(complement)) {
                 results.push(new int[] { map.get(complement), nums[i] }); // TODO: gjennomgå tuple
-                // TODO: map.put(nums[i], i) ??
             }
             else {
-                map.put(nums[i], i);
+                map.put(nums[i], nums[i]);
             }
         }
 
