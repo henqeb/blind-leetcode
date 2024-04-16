@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.Set;
 import java.util.Stack;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,7 +10,9 @@ public class Solution {
 
     public static void main(String[] args) {
         int[] input = {-1,0,1,2,-1,-4};
-        var tripletList = threeSum_WORKING(input);
+        // int[] input = {0, 1, 1};
+        // int[] input = {0, 0, 0};
+        var tripletList = threeSum(input);
         
         for (var triplet : tripletList) {
             int x = triplet.get(0);
@@ -20,50 +23,20 @@ public class Solution {
     }
 
     /**
-     * Find three numbers x, y, z, where x != y && x!= y && y != z, such that these numbers add up to 0.
+     * Find three numbers x, y, z, such that these numbers add up to 0.
      * @param nums input array of numbers
-     * @return List of triplets (also represented as lists).
+     * @return List of triplets (triplets also represented as lists).
      */
     public static List<List<Integer>> threeSum(int[] nums) {
-        List<List<Integer>> tripletList = new ArrayList<>();
-
-        for (int i = 0; i < nums.length; i++) {
-            int x = nums[i];
-            int[] twoSumSearchSpace = copyInputArrayAfterIndex(nums, i); // TODO: replace with nested loop?
-            Stack<int[]> twoSumResult = twoSum(twoSumSearchSpace, -x);
-            if (twoSumResult.empty()) {
-                continue;
-            }
-
-            while (!twoSumResult.empty()) {
-                int[] yz = twoSumResult.pop();
-                int y = yz[0];
-                int z = yz[1];
-
-                ArrayList<Integer> newTriplet = new ArrayList<>(Arrays.asList(x, y, z));
-                for (var triplet : tripletList) { // TODO: fortsett her
-                    if (newTriplet.containsAll(triplet) && triplet.containsAll(newTriplet)) {
-                        System.out.println("Found duplicate"); // TODO: fjern test
-                        break;
-                    }
-                    else {
-                        tripletList.add(newTriplet);
-                    }
-                }
-            }
-        }
-
-        return tripletList;
-    }
-
-    public static List<List<Integer>> threeSum_WORKING(int[] nums) {
-        var tripletSet = new HashSet<List<Integer>>();
+        Arrays.sort(nums);
+        Set<List<Integer>> tripletSet = new HashSet<>();
 
         for (int i = 0; i < nums.length; i++) {
             int x = nums[i];
             int[] twoSumSearchSpace = copyInputArrayAfterIndex(nums, i);
             Stack<int[]> twoSumResult = twoSum(twoSumSearchSpace, -x);
-            if (twoSumResult.empty()) continue;
+            if (twoSumResult.empty())
+                continue;
 
             while (!twoSumResult.empty()) {
                 int[] yz = twoSumResult.pop();
